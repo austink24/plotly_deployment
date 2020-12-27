@@ -61,17 +61,21 @@ function buildCharts(sample) {
   d3.json("samples.json").then((data) => {
     // 3. Create a variable that holds the samples array. 
     var samples = data.samples;
-  
+    var metadata = data.metadata;
     // 4. Create a variable that filters the samples for the object with the desired sample number.
     var resultArray = samples.filter(sampleObj => sampleObj.id == sample);
+    var metadataArray = metadata.filter(sampleObj => sampleObj.id == sample);
     //  5. Create a variable that holds the first sample in the array.
-    var result = resultArray[0];
-
+    var result1 = resultArray[0];
+    var result = metadataArray[0];
+    
+    var test = result.wfreq
+    console.log(test)
     // 6. Create variables that hold the otu_ids, otu_labels, and sample_values.
     
-    var otu_ids = result.otu_ids;
-    var otu_labels = result.otu_labels;
-    var sample_values = result.sample_values;
+    var otu_ids = result1.otu_ids;
+    var otu_labels = result1.otu_labels;
+    var sample_values = result1.sample_values;
 
     // 7. Create the yticks for the bar chart.
     // Hint: Get the the top 10 otu_ids and map them in descending order  
@@ -132,12 +136,19 @@ function buildCharts(sample) {
       {
         domain: { x: [0, 1], y: [0, 1] },
         marker: {size: 28, color:'black'},
-        value: result.wfreq,
+        value: test,
         title: 'Belly Button Washing Frequency<br> Scrubs per Week',
         titlefont: {family: '"Arial, Helvetica, sans-serif'},
         type: "indicator",
-        gauge: { axis: { visible: true, range: [0, 9] } },
-        mode: "number+gauge"
+        gauge: { axis: { visible: true, range: [0, 10] },
+          bar: { color: "black"}, 
+          steps: [
+             { range: [0, 2], color: "red" },
+             { range: [2, 4], color: "orange" },
+             { range: [4, 6], color: "yellow" },
+             { range: [6, 8], color: "yellowgreen" },
+             { range: [8, 10], color: "green" }]},
+        mode: "number+gauge",
       }
      
     ];
